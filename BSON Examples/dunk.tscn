@@ -1,0 +1,131 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckdfb5ggwslbk"]
+
+[ext_resource type="Script" path="res://BSON Examples/dunk.gd" id="1_p38ab"]
+
+[node name="Dunk" type="Control" node_paths=PackedStringArray("JSONEditor", "OutputLabel", "CopyPopup")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p38ab")
+JSONEditor = NodePath("Panel/JSONEdit")
+OutputLabel = NodePath("Panel/Scroll/Output")
+CopyPopup = NodePath("CopyPopup")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 119.0
+offset_top = 67.0
+offset_right = -119.0
+offset_bottom = -67.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="JSONEdit" type="CodeEdit" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 86.0
+offset_top = 14.0
+offset_right = -86.0
+offset_bottom = -277.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "{
+	\"username\": \"johndoe\",
+	\"firstname\": \"John\",
+	\"lastname\": \"Doe\",
+	\"email\": {
+		\"adress\": \"john-doe@example.com\",
+		\"verified\": true
+	},
+	\"age\": 32,
+	\"phone\": {
+		\"number\": \"0123456789\",
+		\"verified\": false
+	},
+	\"assets\": [
+		\"foo\",
+		\"bar\",
+		42,
+		true,
+		false,
+		3.14159265,
+		\"baz\"
+	]
+}"
+middle_mouse_paste_enabled = false
+minimap_draw = true
+gutters_draw_line_numbers = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[node name="Dunk" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 364.0
+offset_top = 243.0
+offset_right = -364.0
+offset_bottom = -228.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Run"
+
+[node name="Copy" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 364.0
+offset_top = 291.0
+offset_right = -364.0
+offset_bottom = -180.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Copy Output
+"
+
+[node name="Scroll" type="ScrollContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 83.0
+offset_top = 346.0
+offset_right = -83.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Output" type="Label" parent="Panel/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "This example will \"dunk\" your JSON into BSON and then convert it back to JSON.
+Due to a quirk in the way Godot parses JSON, all integers will be parsed as floats.
+This may be a bug in Godot."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="CopyPopup" type="PopupPanel" parent="."]
+transparent_bg = true
+position = Vector2i(492, 586)
+size = Vector2i(164, 31)
+
+[node name="Label" type="Label" parent="CopyPopup"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 160.0
+offset_bottom = 27.0
+text = "Copied to clipboard!"
+
+[connection signal="pressed" from="Panel/Dunk" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Panel/Copy" to="." method="_on_copy_pressed"]
