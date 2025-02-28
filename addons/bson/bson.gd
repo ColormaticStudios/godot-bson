@@ -33,6 +33,8 @@ static func get_byte_type(value: Variant) -> int:
 			return 0x03
 		TYPE_BOOL:
 			return 0x08
+		TYPE_NIL:
+			return 0x0a
 		_:
 			push_error("BSON serialization error: Unsupported type: ", typeof(value))
 			return 0x00
@@ -189,6 +191,9 @@ class Deserializer:
 	func get_bool() -> bool:
 		return (get_int8() == 1)
 	
+	func get_null() -> void:
+		read_position += 1
+	
 	func read_dictionary() -> Dictionary:
 		var object = {}
 		
@@ -215,6 +220,9 @@ class Deserializer:
 				0x08: object[key] = get_bool()
 				0x04: object[key] = read_array()
 				0x03: object[key] = read_dictionary()
+				0x0a:
+					object[key] = null
+					get_null()
 				_:
 					push_error("BSON deserialization error: Unsupported type "
 						+ str(type)
@@ -262,6 +270,9 @@ class Deserializer:
 				0x08: array.append(get_bool())
 				0x04: array.append(read_array())
 				0x03: array.append(read_dictionary())
+				0x0a:
+					array.append(null)
+					get_null()
 				_: push_error("BSON deserialization error: Unsupported type: " + str(type))
 		if iter > expected_size:
 			push_warning("BSON deserialization warning: Array is the wrong length."
