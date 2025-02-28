@@ -2,7 +2,10 @@
 # This file is the BSON serializer for the Godot Engine,
 # published under the MIT license. https://opensource.org/license/MIT
 
-class_name BSON
+extends Node
+# Unfortunately, this has to be a node in order to be a singleton.
+# I'd rather BSON wasn't in the scenetree, but it seems like that's
+# the only way to do this. Hopefully this will change in the future.
 
 
 static func to_bson(data: Dictionary) -> PackedByteArray:
