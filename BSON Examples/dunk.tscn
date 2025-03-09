@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ckdfb5ggwslbk"]
 
-[ext_resource type="Script" path="res://BSON Examples/dunk.gd" id="1_p38ab"]
+[ext_resource type="Script" uid="uid://ct7fwu1uxvpmt" path="res://BSON Examples/dunk.gd" id="1_p38ab"]
 
 [node name="Dunk" type="Control" node_paths=PackedStringArray("JSONEditor", "OutputLabel", "CopyPopup")]
 layout_mode = 3
