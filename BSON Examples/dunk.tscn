@@ -57,7 +57,8 @@ text = "{
 		true,
 		false,
 		3.14159265,
-		\"baz\"
+		\"baz\",
+		null
 	]
 }"
 middle_mouse_paste_enabled = false

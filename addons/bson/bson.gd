@@ -19,11 +19,11 @@ static func get_byte_type(value: Variant) -> int:
 			return 0x02
 		TYPE_INT:
 			if abs(value as int) < 2147483647: # 32 bit signed integer limit
-				return 0x10
+				return 0x10 # 32 bit signed int
 			else:
-				return 0x12
+				return 0x12 # 64 bit signed int
 		TYPE_FLOAT:
-			return 0x01
+			return 0x01 # Double
 		TYPE_ARRAY:
 			return 0x04
 		TYPE_DICTIONARY:
@@ -73,7 +73,7 @@ static func dictionary_to_bytes(dict: Dictionary) -> PackedByteArray:
 		buffer.append(get_byte_type(dict[key]))
 		var key_string_bytes := key.to_utf8_buffer()
 		buffer.append_array(key_string_bytes)
-		buffer.append(0x00)
+		buffer.append(0x00) # Index string null terminator
 		buffer.append_array(serialize_variant(dict[key]))
 	
 	return buffer
@@ -84,10 +84,10 @@ static func array_to_bytes(array: Array[Variant]) -> PackedByteArray:
 	for index: int in range(array.size()):
 		buffer.append(get_byte_type(array[index]))
 		# For whatever reason, BSON wants array indexes to be strings. This makes no sense.
+		# The string indexes are literally just the number but in ASCII/UTF8.
 		var s_index := str(index)
 		buffer.append_array(s_index.to_utf8_buffer())
-		buffer.append(0x00)
-		
+		buffer.append(0x00) # Index string null terminator
 		buffer.append_array(serialize_variant(array[index]))
 	
 	return buffer
@@ -126,6 +126,8 @@ static func serialize_variant(data: Variant) -> PackedByteArray:
 
 
 static func from_bson(data: PackedByteArray) -> Dictionary:
+	if data[-1] != 0x00:
+		push_error("BSON deserialization error: Document is not null terminated. It is likely that the provided buffer is not BSON.")
 	return Deserializer.new(data).read_dictionary()
 
 
@@ -175,7 +177,7 @@ class Deserializer:
 			var b_char := get_int8()
 			if b_char == 0x00: break
 			s_value += char(b_char)
-		if expected_size != iter: # Check if the string is terminated with 0x00
+		if expected_size != iter:
 			push_error("BSON deserialization error: String was the wrong size."
 				+ " Position: "
 				+ str(read_position - iter)
