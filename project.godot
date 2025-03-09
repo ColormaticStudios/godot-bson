@@ -14,11 +14,3 @@ config/name="BSON for Godot"
 run/main_scene="res://BSON Examples/dunk.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
-
-[autoload]
-
-BSON="*res://addons/bson/bson.gd"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/bson/plugin.cfg")
