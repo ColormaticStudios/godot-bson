@@ -12,5 +12,5 @@ config_version=5
 
 config/name="BSON for Godot"
 run/main_scene="res://BSON Examples/dunk.tscn"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
