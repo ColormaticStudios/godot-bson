@@ -170,13 +170,15 @@ class Deserializer:
 	
 	func get_string() -> String:
 		var expected_size = get_int32()
-		var s_value: String
 		var iter := 0
+		
+		var bytes:PackedByteArray=PackedByteArray()
 		while true:
 			iter += 1
 			var b_char := get_int8()
 			if b_char == 0x00: break
-			s_value += char(b_char)
+			bytes.append(b_char)
+		var s_value:=bytes.get_string_from_utf8()
 		if expected_size != iter:
 			push_error("BSON deserialization error: String was the wrong size."
 				+ " Position: "
@@ -201,13 +203,13 @@ class Deserializer:
 			var type := get_int8()
 			if type == 0x00: break
 			
-			var key := ""
 			
+			var bytes:PackedByteArray=PackedByteArray()
 			while true:
 				var k_char := get_int8()
 				if k_char == 0x00: break
-				key += char(k_char)
-			
+				bytes.append(k_char)
+			var key:=bytes.get_string_from_utf8()
 			match type:
 				0x02: object[key] = get_string()
 				0x10: object[key] = get_int32()
