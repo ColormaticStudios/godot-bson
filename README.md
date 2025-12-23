@@ -7,11 +7,11 @@ BSON, short for Bin­ary [JSON](http://json.org), is a bin­ary-en­coded seri­
 This plugin is useful for server/client communication, interacting with MongoDB, reducing JSON file sizes, etc.
 
 After enabling this plugin in your Godot project settings, you can access the BSON object with:
-```
+```gdscript
 BSON.to_bson(Dictionary)
 ```
 and
-```
+```gdscript
 BSON.from_bson(PackedByteArray)
 ```
 You can also test out this plugin with `/BSON Examples/dunk.tscn`. This example will take your JSON, serialize it to BSON, then deserialize it back to JSON.
